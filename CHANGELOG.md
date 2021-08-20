@@ -530,7 +530,7 @@ Note: Nextcloud 20 support will be dropped in Oct 2021, this is very likely the 
 There are no additional changes compared to the latest beta.
 
 ### Changed
-- News now requires a 64bit OS
+- ~~News now requires a 64bit OS~~ – reverted in this fork
 - v2 API implementation (folder part)
 - Implemented sharing news items between nextcloud users (#1191)
 - Updated the news items table in DB to include sharer data (#1191)
