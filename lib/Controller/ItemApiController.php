@@ -113,7 +113,7 @@ class ItemApiController extends ApiController
     /**
      * @param int $type
      * @param int $id
-     * @param int $lastModified
+     * @param float $lastModified
      * @return array|JSONResponse
      *
      * @throws ServiceValidationException
@@ -121,7 +121,7 @@ class ItemApiController extends ApiController
     #[CORS]
     #[NoCSRFRequired]
     #[NoAdminRequired]
-    public function updated(int $type = 3, int $id = 0, int $lastModified = 0): array
+    public function updated(int $type = 3, int $id = 0, float $lastModified = 0): array
     {
         // needs to be turned into a millisecond timestamp to work properly
         if (strlen((string) $lastModified) <= 10) {
