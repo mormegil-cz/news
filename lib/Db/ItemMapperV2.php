@@ -328,7 +328,7 @@ class ItemMapperV2 extends NewsMapperV2
     /**
      * @param string $userId
      * @param int    $feedId
-     * @param int    $updatedSince
+     * @param float  $updatedSince
      * @param bool   $hideRead
      *
      * @return Item[]
@@ -336,7 +336,7 @@ class ItemMapperV2 extends NewsMapperV2
     public function findAllInFeedAfter(
         string $userId,
         int $feedId,
-        int $updatedSince,
+        float $updatedSince,
         bool $hideRead
     ): array {
         $builder = $this->db->getQueryBuilder();
@@ -366,7 +366,7 @@ class ItemMapperV2 extends NewsMapperV2
     /**
      * @param string   $userId
      * @param int|null $folderId
-     * @param int      $updatedSince
+     * @param float    $updatedSince
      * @param bool     $hideRead
      *
      * @return Item[]
@@ -374,7 +374,7 @@ class ItemMapperV2 extends NewsMapperV2
     public function findAllInFolderAfter(
         string $userId,
         ?int $folderId,
-        int $updatedSince,
+        float $updatedSince,
         bool $hideRead
     ): array {
         $builder = $this->db->getQueryBuilder();
@@ -400,13 +400,13 @@ class ItemMapperV2 extends NewsMapperV2
 
     /**
      * @param string $userId
-     * @param int    $updatedSince
+     * @param float  $updatedSince
      * @param int    $feedType
      *
      * @return Item[]|Entity[]
      * @throws ServiceValidationException
      */
-    public function findAllAfter(string $userId, int $feedType, int $updatedSince): array
+    public function findAllAfter(string $userId, int $feedType, float $updatedSince): array
     {
         $builder = $this->db->getQueryBuilder();
 
