@@ -11,8 +11,24 @@
 
 namespace OCA\News\Utility;
 
+use DateTime;
+
 class Time
 {
+    /**
+     * Get the timestamp of a DateTime value safely for a 32-bit platform
+     * @param DateTime|null $dateTime Optional date time value
+     * @return int|null Result of $dateTime->getTimestamp() if it fits into an int, otherwise PHP_INT_MAX
+     */
+    public static function getDateTimeTimestamp(?DateTime $dateTime): ?int
+    {
+        if ($dateTime === null) {
+            return null;
+        }
+        $asFloat = floatval($dateTime->format('U'));
+        return $asFloat > PHP_INT_MAX ? PHP_INT_MAX : intval($asFloat);
+    }
+
     public function getTime(): int
     {
         return time();
