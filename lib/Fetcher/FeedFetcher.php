@@ -189,9 +189,9 @@ class FeedFetcher implements IFeedFetcher
         );
 
         // Set the next calculated update time, but maximum 24 hours from now
-        $feed->setNextUpdateTime(nextUpdateTime: min($resource->getNextUpdate(
+        $feed->setNextUpdateTime(nextUpdateTime: min(Time::getDateTimeTimestamp($resource->getNextUpdate(
             sleepyDuration: $this->fetcherConfig::SLEEPY_DURATION
-        )?->getTimestamp(), time() + 86400));
+        )), time() + 86400));
 
         $this->logger->debug(
             'Feed {url} was parsed and nextUpdateTime is {nextUpdateTime}',
@@ -220,7 +220,8 @@ class FeedFetcher implements IFeedFetcher
             ]
         );
 
-        $feedTimestamp = $parsedFeed->getLastModified()?->getTimestamp();
+        $feedTimestamp = Time::getDateTimeTimestamp($parsedFeed->getLastModified());
+
         foreach ($parsedFeed as $item) {
             $body = null;
             $currRTL = $RTL;
@@ -234,7 +235,7 @@ class FeedFetcher implements IFeedFetcher
                     // pubDate timestamp from DB/Item
                     $oldPubDateTimestamp = $guidHashList[$guidHash];
                     // pubDate/published timestamp from feed-io node/item interface
-                    $newPubDateTimestamp = $item->getLastModified()?->getTimestamp();
+                    $newPubDateTimestamp = Time::getDateTimeTimestamp($item->getLastModified());
 
                     // skip items with no valid pub date or when up to date
                     if (is_null($newPubDateTimestamp) ||
@@ -382,9 +383,9 @@ class FeedFetcher implements IFeedFetcher
             $pubDT = $lastModified;
         }
 
-        $item->setPubDate($pubDT->getTimestamp());
+        $item->setPubDate(Time::getDateTimeTimestamp($pubDT));
 
-        $item->setLastModified($lastModified->getTimestamp());
+        $item->setLastModified(Time::getDateTimeTimestamp($lastModified));
         $item->setRtl($RTL);
 
         // unescape content because angularjs helps against XSS
@@ -428,7 +429,7 @@ class FeedFetcher implements IFeedFetcher
                 }
                 libxml_clear_errors();
             }
-            
+
             if (!mb_check_encoding($body, 'UTF-8')) {
                 // Convert to UTF-8 if needed with comprehensive encoding detection
                 $encodingList = ['ISO-8859-1', 'Windows-1252', 'ASCII', 'UTF-16', 'UTF-16BE', 'UTF-16LE'];
@@ -549,7 +550,7 @@ class FeedFetcher implements IFeedFetcher
             try {
                 $link_uri = new Uri($feed_link);
                 $link_base_url = (string) $link_uri->withPath('/');
-                
+
                 if ($link_base_url !== $base_url) { // Only try if it's different from feed URL
                     $link_favicon = $this->faviconFactory->discover($link_base_url);
                     if (is_string($link_favicon) && $link_favicon !== '') {
